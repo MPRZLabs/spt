@@ -1,5 +1,4 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 import dbus
 
 class MPRISController(object):
@@ -14,7 +13,7 @@ class MPRISController(object):
         self.player.Pause()
     def playpause(self):
         self.player.PlayPause()
-    def next(self):
+    def forward(self):
         self.player.Next()
     def previous(self):
         self.player.Previous()

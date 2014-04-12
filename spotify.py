@@ -1,5 +1,4 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 from mpris import MPRISController
 import argparse
 
@@ -11,7 +10,7 @@ class SpotifyController(MPRISController):
         parser.add_argument('--play', '-p', action="store_true", help='Starts playing. (Warning: it\'s buggy.)')
         parser.add_argument('--pause', '-s', action="store_true", help='Stops playing.')
         parser.add_argument('--toggle', '-t', action="store_true", help='Starts playing if it\'s paused. Stops if started.')
-        parser.add_argument('--next', '-n', action="store_true", help='Skips to the next track.')
+        parser.add_argument('--forward', '--next', '-f', '-n', action="store_true", help='Skips to the next track.')
         parser.add_argument('--previous', '--prev', '-b', action="store_true", help='Skips to the previous track.')
         parser.add_argument('--title', action="store_true", help='Prints title.')
         parser.add_argument('--album', action="store_true", help='Prints album.')
@@ -23,16 +22,16 @@ class SpotifyController(MPRISController):
             self.pause()
         if args.toggle:
             self.playpause()
-        if args.next:
-            self.next()
+        if args.forward:
+            self.forward()
         if args.previous:
             self.previous()
         if args.title:
-            print(self.title())
+            print(self.title().decode())
         if args.album:
-            print(self.album())
+            print(self.album().decode())
         if args.artist:
-            print(self.artist())
+            print(self.artist().decode())
 
 if __name__ == '__main__':
 	SpotifyController().main()
