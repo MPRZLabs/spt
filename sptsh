@@ -1,25 +1,35 @@
 #!/usr/bin/env python3
-import spotify, curses
+import spotify, curses, datetime
 class SpotifyShell(object):
     def redraw(self):
         self.title = self.spt.title()
         self.album = self.spt.album()
         self.artist = self.spt.artist()
+        self.time = datetime.datetime.now().time()
+        self.dims = self.screen.getmaxyx()
         self.screen.clear()
         self.screen.border()
+        titlebar = " SptSH "
+        self.screen.addstr(0, round(self.dims[1]/2-len(titlebar)/2), titlebar, curses.color_pair(5))
         self.screen.addstr(2, 2, "Now playing", curses.color_pair(1))
         self.screen.addstr(3, 4, self.title, curses.color_pair(2))
         self.screen.addstr(4, 2, "by", curses.color_pair(1))
         self.screen.addstr(5, 4, self.artist, curses.color_pair(3))
         self.screen.addstr(6, 2, "from", curses.color_pair(1))
         self.screen.addstr(7, 4, self.album, curses.color_pair(4))
+        if self.time24:
+            self.screen.addstr(9, 2, self.time.strftime(" %H:%M"), curses.color_pair(5))
+        else:
+            self.screen.addstr(9, 2, self.time.strftime(" %I:%M %p"), curses.color_pair(5))
         self.screen.refresh()
     def main(self, screen):
         self.screen = screen
+        self.time24 = True
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
         curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
         curses.init_pair(4, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+        curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_WHITE)
         self.spt = spotify.SpotifyController()
         self.screen.nodelay(1)
         self.redraw()
@@ -27,11 +37,14 @@ class SpotifyShell(object):
             event = self.screen.getch()
             if event == ord("q"):
                 break
-            elif event == ord("n"):
+            elif event == ord("n") or event == curses.KEY_RIGHT:
                 self.spt.forward()
-            elif event == ord("b"):
+            elif event == ord("b") or event == curses.KEY_LEFT:
                 self.spt.previous()
-            if self.title != self.spt.title() or self.album != self.spt.album() or self.artist != self.spt.artist():
+            elif event == ord(";"):
+                self.time24 = not self.time24
+                self.redraw()
+            if self.title != self.spt.title() or self.album != self.spt.album() or self.artist != self.spt.artist() or self.time.minute != datetime.datetime.now().time().minute or self.time.hour != datetime.datetime.now().time().hour or self.dims != self.screen.getmaxyx():
                 self.redraw()
 
 def main(screen):
