@@ -1,6 +1,6 @@
 # Maintainer: Michał Sidor <michcioperz@autistici.org>
 pkgname=python-mprisfy
-pkgver=1.2
+pkgver=1.3
 pkgrel=1
 pkgdesc="Commandline tool for controlling Spotify"
 arch=('any')
@@ -22,4 +22,3 @@ package() {
   cd "$srcdir/spt"
   python setup.py install --root="$pkgdir/" --optimize=1
 }
-
