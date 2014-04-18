@@ -37,3 +37,29 @@ class MPRISController(object):
             return data["xesam:artist"][0].encode('utf-8')
         else:
             return None
+
+class DummyController(MPRISController):
+    def __init__(self):
+        pass
+    def play(self):
+        pass
+    def pause(self):
+        pass
+    def playpause(self):
+        pass
+    def forward(self):
+        pass
+    def previous(self):
+        pass
+    def prev(self):
+        pass
+    def props(self):
+        return None
+    def metadata(self):
+        return None
+    def title(self):
+        return None
+    def album(self):
+        return None
+    def artist(self):
+        return None

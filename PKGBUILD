@@ -1,6 +1,6 @@
 # Maintainer: Michał Sidor <michcioperz@autistici.org>
 pkgname=python-mprisfy
-pkgver=1.3
+pkgver=1.4
 pkgrel=1
 pkgdesc="Commandline tool for controlling Spotify"
 arch=('any')

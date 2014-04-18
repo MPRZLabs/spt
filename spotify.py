@@ -4,12 +4,7 @@ import time, dbus, argparse, subprocess
 
 class SpotifyController(MPRISController):
     def __init__(self):
-        try:
-            MPRISController.__init__(self, 'org.mpris.MediaPlayer2.spotify')
-        except dbus.exceptions.DBusException:
-            subprocess.Popen(["spotify"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            time.sleep(15)
-            MPRISController.__init__(self, 'org.mpris.MediaPlayer2.spotify')
+        MPRISController.__init__(self, 'org.mpris.MediaPlayer2.spotify')
     def main(self):
         parser = argparse.ArgumentParser(description='Control Spotify from CLI through DBus')
         parser.add_argument('--play', '-p', action="store_true", help='Starts playing. (Warning: it\'s buggy.)')
