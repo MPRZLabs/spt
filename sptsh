@@ -12,11 +12,20 @@ class SpotifyShell(object):
         titlebar = " SptSH "
         self.screen.addstr(0, round(self.dims[1]/2-len(titlebar)/2), titlebar, curses.color_pair(5))
         self.screen.addstr(2, 2, "Now playing", curses.color_pair(1))
-        self.screen.addstr(3, 4, self.title, curses.color_pair(2))
+        if len(self.title) > (self.dims[1]-6):
+            self.screen.addstr(3, 4, self.title[:(self.dims[1]-9)].decode() + "...", curses.color_pair(2))
+        else:
+            self.screen.addstr(3, 4, self.title, curses.color_pair(2))
         self.screen.addstr(4, 2, "by", curses.color_pair(1))
-        self.screen.addstr(5, 4, self.artist, curses.color_pair(3))
+        if len(self.artist) > (self.dims[1]-6):
+            self.screen.addstr(5, 4, self.artist[:(self.dims[1]-9)].decode() + "...", curses.color_pair(3))
+        else:
+            self.screen.addstr(5, 4, self.artist, curses.color_pair(3))
         self.screen.addstr(6, 2, "from", curses.color_pair(1))
-        self.screen.addstr(7, 4, self.album, curses.color_pair(4))
+        if len(self.album) > (self.dims[1]-6):
+            self.screen.addstr(7, 4, self.album[:(self.dims[1]-9)].decode() + "...", curses.color_pair(4))
+        else:
+            self.screen.addstr(7, 4, self.album, curses.color_pair(4))
         if self.time24:
             self.screen.addstr(9, 2, self.time.strftime(" %H:%M"), curses.color_pair(5))
         else:
