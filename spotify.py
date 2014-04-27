@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from mpris import MPRISController
+from gi.repository import Notify
 import time, dbus, argparse, subprocess
 
 class SpotifyController(MPRISController):
@@ -12,10 +13,11 @@ class SpotifyController(MPRISController):
         parser.add_argument('--toggle', '-t', action="store_true", help='Starts playing if it\'s paused. Stops if started.')
         parser.add_argument('--forward', '--next', '-f', '-n', action="store_true", help='Skips to the next track.')
         parser.add_argument('--previous', '--prev', '-b', action="store_true", help='Skips to the previous track.')
-        parser.add_argument('--pretty', '-o', action="store_true", help='Prints out track metadata nicely.')
+        parser.add_argument('--noprint', '-q', action="store_false", help='Does not print out track metadata nicely.')
         parser.add_argument('--title', action="store_true", help='Prints title.')
         parser.add_argument('--album', action="store_true", help='Prints album.')
         parser.add_argument('--artist', action="store_true", help='Prints artist.')
+        parser.add_argument('--nonotify', action="store_false", help='Does not throw a libnotify notification')
         args = parser.parse_args()
         if args.play:
             self.play()
@@ -33,8 +35,11 @@ class SpotifyController(MPRISController):
             print(self.album().decode())
         if args.artist:
             print(self.artist().decode())
-        if args.pretty:
+        if args.noprint:
             print("You are now listening to %s by %s from album %s" % (self.title().decode(), self.artist().decode(), self.album().decode()))
+        if args.nonotify:
+            Notify.init("SPT")
+            Notify.Notification.new("SPT", "You are now listening to %s by %s from album %s" % (self.title().decode(), self.artist().decode(), self.album().decode()), "dialog-information").show()
 
 if __name__ == '__main__':
 	SpotifyController().main()
